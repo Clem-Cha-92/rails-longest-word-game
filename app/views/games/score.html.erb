@@ -1,7 +1,8 @@
 <h1>Result</h1>
 <br>
 <p><%= @score %></p>
+<p>Your total score is : <%= session[:score] %> !</p>
 <br>
 
 <br>
-<%= link_to "Play again", new_path %>
+<p class="btn btn-dark"><%= link_to "Play again", new_path %></p>

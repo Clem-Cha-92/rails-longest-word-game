@@ -3,6 +3,8 @@ require 'open-uri'
 
 class GamesController < ApplicationController
   def new
+    session[:new] ||= 0
+    session[:new] += 1
     @letters = []
     10.times { @letters << ("a".."z").to_a.sample.capitalize }
     return @letters
@@ -11,12 +13,15 @@ class GamesController < ApplicationController
   def score
     @answer = params[:answer].upcase
     @letters = params[:letters]
+    session[:score] ||= 0
     if english?("https://wagon-dictionary.herokuapp.com/#{params[:answer]}") == false
       @score = "Sorry but #{@answer} does not seem to be a valid English word.."
     elsif included?(@answer, @letters) == false
       @score = "Sorry but #{@answer} can't be built out of #{@letters}"
     else
-      @score = "Congratulations !"
+      points = @answer.length * @answer.length
+      session[:score] += points
+      @score = "Congratulations, you have #{points} points !"
     end
   end
 
